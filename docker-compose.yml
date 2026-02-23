@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mongodb:
+    image: mongo:7
+    container_name: cms-mongodb
+    restart: unless-stopped
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+    environment:
+      MONGO_INITDB_DATABASE: cms
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cms-api
+    restart: unless-stopped
+    ports:
+      - "5000:5000"
+    environment:
+      NODE_ENV: production
+      PORT: 5000
+      MONGODB_URI: mongodb://mongodb:27017/cms
+      JWT_SECRET: ${JWT_SECRET:-change-this-secret}
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    volumes:
+      - ./server/uploads:/app/uploads
+    depends_on:
+      - mongodb
+
+volumes:
+  mongodb_data:
+
+

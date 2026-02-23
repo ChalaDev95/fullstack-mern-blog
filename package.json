@@ -1,0 +1,21 @@
+{
+  "name": "fullstack-cms",
+  "version": "1.0.0",
+  "description": "Full-stack CMS/Blog Platform",
+  "main": "server/index.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm start",
+    "build": "cd client && npm run build",
+    "install-all": "npm install && cd server && npm install && cd ../client && npm install"
+  },
+  "keywords": ["cms", "blog", "fullstack"],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "cloudinary": "^2.18.0"
+  }
+}
+
+
