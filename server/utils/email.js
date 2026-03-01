@@ -2,7 +2,7 @@ const nodemailer = require('nodemailer');
 const { logger } = require('./logger');
 
 // Create transporter
-const createTransporter = () => {
+const createTransport = () => {
   if (process.env.SMTP_HOST) {
     return nodemailer.createTransport({
       host: process.env.SMTP_HOST,
@@ -30,7 +30,7 @@ const createTransporter = () => {
   return null;
 };
 
-const transporter = createTransporter();
+const transporter = createTransport();
 
 // Email templates
 const templates = {
