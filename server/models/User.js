@@ -35,6 +35,16 @@ const userSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+  firstName: {
+    type: String,
+    trim: true,
+    maxlength: [50, 'First name cannot exceed 50 characters']
+  },
+  lastName: {
+    type: String,
+    trim: true,
+    maxlength: [50, 'Last name cannot exceed 50 characters']
+  },
   bio: {
     type: String,
     maxlength: [500, 'Bio cannot exceed 500 characters']
@@ -48,7 +58,7 @@ const userSchema = new mongoose.Schema({
   },
   oauthProvider: {
     type: String,
-    enum: ['google', 'github', 'facebook'],
+    enum: ['google', 'github', 'facebook', null],
     default: null
   },
   oauthId: {

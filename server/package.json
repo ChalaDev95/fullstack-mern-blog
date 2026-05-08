@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "dev": "nodemon index.js"
+    "dev": "nodemon index.js",
+    "admin:create": "node scripts/bootstrapAdmin.js",
+    "db:audit": "node scripts/repairDatabaseIntegrity.js",
+    "db:repair": "node scripts/repairDatabaseIntegrity.js --apply"
   },
   "dependencies": {
     "aws-sdk": "^2.1548.0",
@@ -13,6 +16,7 @@
     "bull": "^4.12.2",
     "cloudinary": "^2.8.1",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dompurify": "^3.1.6",
     "dotenv": "^16.6.1",

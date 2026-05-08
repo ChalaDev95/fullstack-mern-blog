@@ -1,5 +1,11 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+const {
+  buildExcerpt,
+  calculateReadingTime,
+  stripHtml,
+  syncSlugOnDocument,
+  syncSlugOnUpdate
+} = require('./helpers/modelUtils');
 
 const postSchema = new mongoose.Schema({
   title: {
@@ -127,26 +133,54 @@ const postSchema = new mongoose.Schema({
 
 // Generate slug before saving
 postSchema.pre('save', function(next) {
-  if (this.isModified('title') && !this.slug) {
-    this.slug = slugify(this.title, { lower: true, strict: true });
+  syncSlugOnDocument(this, 'title');
+
+  if (this.isModified('body')) {
+    this.readingTime = calculateReadingTime(this.body);
+
+    if (!this.isModified('excerpt')) {
+      this.excerpt = buildExcerpt(this.body);
+    }
   }
+
+  if (this.isModified('excerpt') && this.excerpt) {
+    this.excerpt = stripHtml(this.excerpt);
+  }
+
+  next();
+});
+
+postSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], function(next) {
+  const update = this.getUpdate();
+  syncSlugOnUpdate(update, 'title');
+
+  const updatePayload = update?.$set && typeof update.$set === 'object' ? update.$set : update;
+
+  if (updatePayload?.body) {
+    updatePayload.readingTime = calculateReadingTime(updatePayload.body);
+
+    if (!Object.prototype.hasOwnProperty.call(updatePayload, 'excerpt')) {
+      updatePayload.excerpt = buildExcerpt(updatePayload.body);
+    }
+  }
+
+  if (Object.prototype.hasOwnProperty.call(updatePayload || {}, 'excerpt') && updatePayload.excerpt) {
+    updatePayload.excerpt = stripHtml(updatePayload.excerpt);
+  }
+
   next();
 });
 
 // Calculate reading time
 postSchema.methods.calculateReadingTime = function() {
-  const wordsPerMinute = 200;
-  const text = this.body.replace(/<[^>]*>/g, ''); // Remove HTML tags
-  const wordCount = text.split(/\s+/).length;
-  this.readingTime = Math.ceil(wordCount / wordsPerMinute);
+  this.readingTime = calculateReadingTime(this.body);
   return this.readingTime;
 };
 
 // Auto-generate excerpt if not provided
 postSchema.pre('save', function(next) {
   if (!this.excerpt && this.body) {
-    const text = this.body.replace(/<[^>]*>/g, ''); // Remove HTML
-    this.excerpt = text.substring(0, 300).trim() + (text.length > 300 ? '...' : '');
+    this.excerpt = buildExcerpt(this.body);
   }
   next();
 });

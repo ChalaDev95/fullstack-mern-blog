@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+const { syncSlugOnDocument, syncSlugOnUpdate } = require('./helpers/modelUtils');
 
 const pageSchema = new mongoose.Schema({
   title: {
@@ -48,9 +48,12 @@ const pageSchema = new mongoose.Schema({
 
 // Generate slug
 pageSchema.pre('save', function(next) {
-  if (this.isModified('title') && !this.slug) {
-    this.slug = slugify(this.title, { lower: true, strict: true });
-  }
+  syncSlugOnDocument(this, 'title');
+  next();
+});
+
+pageSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], function(next) {
+  syncSlugOnUpdate(this.getUpdate(), 'title');
   next();
 });
 

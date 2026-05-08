@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const slugify = require('slugify');
+const { syncSlugOnDocument, syncSlugOnUpdate } = require('./helpers/modelUtils');
 
 const tagSchema = new mongoose.Schema({
   name: {
@@ -30,9 +30,12 @@ const tagSchema = new mongoose.Schema({
 
 // Generate slug
 tagSchema.pre('save', function(next) {
-  if (this.isModified('name') && !this.slug) {
-    this.slug = slugify(this.name, { lower: true, strict: true });
-  }
+  syncSlugOnDocument(this, 'name');
+  next();
+});
+
+tagSchema.pre(['findOneAndUpdate', 'updateOne', 'updateMany'], function(next) {
+  syncSlugOnUpdate(this.getUpdate(), 'name');
   next();
 });
 

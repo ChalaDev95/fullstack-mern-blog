@@ -15,6 +15,7 @@ const activityLogSchema = new mongoose.Schema({
       'post.deleted',
       'post.published',
       'post.scheduled',
+      'post.revision_restored',
       'page.created',
       'page.updated',
       'page.deleted',

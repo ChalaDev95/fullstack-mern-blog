@@ -3,11 +3,10 @@ require('dotenv').config();
 const { createApp } = require('./app');
 const { connectDB, disconnectDB } = require('./config/database');
 const { logger } = require('./utils/logger');
+const { validateEnv } = require('./utils/envValidator');
 
-// Validate critical environment variables early
-if (!process.env.JWT_SECRET || process.env.JWT_SECRET === 'your-super-secret-jwt-key-change-this-in-production') {
-  logger.warn('WARNING: JWT_SECRET is not set or is using default value. Please set a strong secret in production!');
-}
+// Validate environment variables early
+validateEnv();
 
 const PORT = process.env.PORT || 5000;
 let server;

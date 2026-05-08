@@ -49,11 +49,26 @@ const subscriptionSchema = new mongoose.Schema({
   timestamps: true
 });
 
+subscriptionSchema.pre('validate', function(next) {
+  const targets = [this.post, this.category, this.tag].filter(Boolean);
+
+  if (targets.length !== 1) {
+    this.invalidate('post', 'A subscription must reference exactly one target: post, category, or tag');
+    this.invalidate('category', 'A subscription must reference exactly one target: post, category, or tag');
+    this.invalidate('tag', 'A subscription must reference exactly one target: post, category, or tag');
+  }
+
+  next();
+});
+
 // Indexes
 subscriptionSchema.index({ user: 1 });
 subscriptionSchema.index({ post: 1 });
 subscriptionSchema.index({ category: 1 });
 subscriptionSchema.index({ tag: 1 });
+subscriptionSchema.index({ user: 1, post: 1 }, { unique: true, sparse: true });
+subscriptionSchema.index({ user: 1, category: 1 }, { unique: true, sparse: true });
+subscriptionSchema.index({ user: 1, tag: 1 }, { unique: true, sparse: true });
 subscriptionSchema.index({ email: 1 });
 subscriptionSchema.index({ unsubscribeToken: 1 });
 

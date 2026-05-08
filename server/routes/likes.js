@@ -77,6 +77,13 @@ router.get('/check', protect, async (req, res, next) => {
       });
     }
 
+    if (post && comment) {
+      return res.status(400).json({
+        success: false,
+        message: 'Provide either post or comment, not both'
+      });
+    }
+
     const like = await Like.findOne({
       user: req.user.id,
       ...(post ? { post } : { comment })

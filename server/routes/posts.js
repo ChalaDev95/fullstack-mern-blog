@@ -89,6 +89,40 @@ router.get('/', [
   }
 });
 
+// @route   GET /api/posts/id/:id
+// @desc    Get single post by id for admin/editor views
+// @access  Private
+router.get('/id/:id', protect, async (req, res, next) => {
+  try {
+    const post = await Post.findById(req.params.id)
+      .populate('author', 'username avatar bio socialLinks')
+      .populate('categories', 'name slug')
+      .populate('tags', 'name slug')
+      .populate('coAuthors', 'username avatar');
+
+    if (!post) {
+      return res.status(404).json({
+        success: false,
+        message: 'Post not found'
+      });
+    }
+
+    if (post.author.toString() !== req.user.id && !['admin', 'editor'].includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to view this post'
+      });
+    }
+
+    res.json({
+      success: true,
+      data: post
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // @route   GET /api/posts/:slug
 // @desc    Get single post
 // @access  Public
@@ -150,8 +184,17 @@ router.get('/:slug', optionalAuth, async (req, res, next) => {
 // @desc    Create post
 // @access  Private (Author, Editor, Admin)
 router.post('/', protect, authorize('admin', 'editor', 'author', 'contributor'), [
-  body('title').trim().isLength({ min: 10, max: 200 }),
-  body('body').notEmpty()
+  body('title').trim().isLength({ min: 10, max: 200 }).withMessage('Title must be between 10 and 200 characters'),
+  body('body')
+    .notEmpty().withMessage('Post content is required')
+    .custom((value) => {
+      // ReactQuill sends '<p><br></p>' for an empty editor
+      const textContent = value.replace(/<[^>]*>/g, '').trim();
+      if (!textContent) {
+        throw new Error('Post content cannot be empty');
+      }
+      return true;
+    })
 ], async (req, res, next) => {
   try {
     const errors = validationResult(req);
@@ -165,9 +208,7 @@ router.post('/', protect, authorize('admin', 'editor', 'author', 'contributor'),
       body: sanitizeHTML(req.body.body)
     };
 
-    // Calculate reading time
     const post = await Post.create(postData);
-    post.calculateReadingTime();
     
     // Handle scheduled publishing
     if (post.status === 'scheduled' && post.publishDate) {
@@ -251,7 +292,6 @@ router.put('/:id', protect, async (req, res, next) => {
     });
 
     post.lastModified = new Date();
-    post.calculateReadingTime();
 
     // Handle status transitions (Draft -> Scheduled, etc.)
     if (post.status === 'scheduled' && post.publishDate && (oldStatus !== 'scheduled' || post.isModified('publishDate'))) {
@@ -342,7 +382,7 @@ router.get('/:id/revisions', protect, async (req, res, next) => {
     }
 
     // Check permissions
-    if (post.author.toString() !== req.params.id && !['admin', 'editor'].includes(req.user.role)) {
+    if (post.author.toString() !== req.user.id && !['admin', 'editor'].includes(req.user.role)) {
       return res.status(403).json({
         success: false,
         message: 'Not authorized'
@@ -432,7 +472,6 @@ router.post('/:id/duplicate', protect, authorize('admin', 'editor', 'author'), a
     duplicateData.likesCount = 0;
 
     const duplicate = await Post.create(duplicateData);
-    duplicate.calculateReadingTime();
     await duplicate.save();
 
     res.status(201).json({
@@ -484,7 +523,6 @@ router.post('/:id/restore-revision', protect, async (req, res, next) => {
     post.categories = revision.categories;
     post.seo = revision.seo;
     post.lastModified = new Date();
-    post.calculateReadingTime();
     await post.save();
 
     // Create new revision for the restore action

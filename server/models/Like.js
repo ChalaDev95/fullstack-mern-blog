@@ -29,6 +29,17 @@ const likeSchema = new mongoose.Schema({
   timestamps: true
 });
 
+likeSchema.pre('validate', function(next) {
+  const targets = [this.post, this.comment].filter(Boolean);
+
+  if (targets.length !== 1) {
+    this.invalidate('post', 'A like must reference exactly one target: either a post or a comment');
+    this.invalidate('comment', 'A like must reference exactly one target: either a post or a comment');
+  }
+
+  next();
+});
+
 // Ensure one like per user per post/comment
 likeSchema.index({ user: 1, post: 1 }, { unique: true, sparse: true });
 likeSchema.index({ user: 1, comment: 1 }, { unique: true, sparse: true });

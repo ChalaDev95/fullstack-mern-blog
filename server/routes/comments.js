@@ -7,6 +7,53 @@ const { sanitizeHTML } = require('../utils/sanitize');
 
 const router = express.Router();
 
+// @route   GET /api/comments
+// @desc    Get all comments for moderation
+// @access  Private (Editor, Admin)
+router.get('/', protect, async (req, res, next) => {
+  try {
+    if (!['admin', 'editor'].includes(req.user.role)) {
+      return res.status(403).json({
+        success: false,
+        message: 'Not authorized to view comments'
+      });
+    }
+
+    const page = parseInt(req.query.page, 10) || 1;
+    const limit = parseInt(req.query.limit, 10) || 20;
+    const skip = (page - 1) * limit;
+    const query = {};
+
+    if (req.query.status) {
+      query.status = req.query.status;
+    }
+
+    if (req.query.search) {
+      query.content = { $regex: req.query.search, $options: 'i' };
+    }
+
+    const comments = await Comment.find(query)
+      .populate('author', 'username avatar email')
+      .populate('post', 'title slug')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(limit);
+
+    const total = await Comment.countDocuments(query);
+
+    res.json({
+      success: true,
+      count: comments.length,
+      total,
+      page,
+      pages: Math.ceil(total / limit),
+      data: comments
+    });
+  } catch (error) {
+    next(error);
+  }
+});
+
 // @route   GET /api/comments/post/:postId
 // @desc    Get comments for a post
 // @access  Public
