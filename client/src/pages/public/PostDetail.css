@@ -207,3 +207,20 @@
 }
 
 
+/* Desktop enhancements (keep mobile/tablet unchanged) */
+@media (min-width: 1200px) {
+  .post-detail {
+    max-width: 1100px;
+    padding: 3rem;
+  }
+
+  .featured-image {
+    height: 520px;
+  }
+
+  .post-header h1 {
+    font-size: 3rem;
+  }
+}
+
+

@@ -127,12 +127,168 @@
 }
 
 /* ---- Responsive ---- */
+
+/* Large Desktop */
+@media (min-width: 1441px) {
+  .login-container {
+    max-width: 460px;
+  }
+  
+  .login-header {
+    padding: 36px 36px 32px;
+  }
+  
+  .login-body {
+    padding: 32px 36px 36px;
+  }
+}
+
+/* Tablet (landscape) */
+@media (max-width: 1200px) {
+  .login-container {
+    max-width: 420px;
+  }
+}
+
+/* Tablet (portrait) */
+@media (max-width: 1024px) {
+  .login-page {
+    padding: 18px;
+  }
+  
+  .login-container {
+    max-width: 400px;
+  }
+  
+  .login-header {
+    padding: 30px 30px 26px;
+  }
+  
+  .login-body {
+    padding: 26px 30px 30px;
+  }
+}
+
+/* Small tablet / Large mobile */
+@media (max-width: 768px) {
+  .login-page {
+    padding: 16px;
+  }
+  
+  .login-container {
+    max-width: 400px;
+  }
+  
+  .login-header {
+    padding: 28px 28px 24px;
+  }
+  
+  .login-body {
+    padding: 24px 28px 28px;
+  }
+  
+  /* Touch-friendly inputs */
+  .login-form-group input {
+    min-height: 44px;
+    padding: 11px 14px;
+  }
+  
+  .login-btn {
+    min-height: 48px;
+    padding: 12px;
+  }
+}
+
+/* Mobile */
 @media (max-width: 480px) {
+  .login-page {
+    padding: 12px;
+  }
+  
+  .login-container {
+    border-radius: 12px;
+  }
+  
   .login-header {
     padding: 24px 20px 20px;
+  }
+  
+  .login-logo {
+    width: 42px;
+    height: 42px;
+    font-size: 20px;
+  }
+  
+  .login-header h1 {
+    font-size: 1.125rem;
+  }
+  
+  .login-header p {
+    font-size: 0.8125rem;
   }
 
   .login-body {
     padding: 20px 20px 24px;
+  }
+  
+  .login-form-group {
+    margin-bottom: 16px;
+  }
+  
+  .login-form-group label {
+    font-size: 0.8125rem;
+  }
+  
+  .login-form-group input {
+    padding: 10px 12px;
+    font-size: 0.875rem;
+    min-height: 44px;
+  }
+  
+  .login-btn {
+    padding: 11px;
+    font-size: 0.875rem;
+    min-height: 48px;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+  .login-page {
+    padding: 10px;
+  }
+  
+  .login-container {
+    border-radius: 10px;
+  }
+  
+  .login-header {
+    padding: 20px 16px 18px;
+  }
+  
+  .login-logo {
+    width: 38px;
+    height: 38px;
+    font-size: 18px;
+  }
+  
+  .login-header h1 {
+    font-size: 1.0625rem;
+  }
+  
+  .login-header p {
+    font-size: 0.75rem;
+  }
+  
+  .login-body {
+    padding: 18px 16px 20px;
+  }
+  
+  .login-form-group input {
+    font-size: 0.8125rem;
+  }
+  
+  .login-btn {
+    font-size: 0.8125rem;
   }
 }

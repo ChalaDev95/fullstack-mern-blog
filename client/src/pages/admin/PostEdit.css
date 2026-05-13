@@ -528,26 +528,273 @@
 }
 
 /* ---- Responsive ---- */
-@media (max-width: 640px) {
+
+/* Large Desktop */
+@media (min-width: 1441px) {
+  .post-edit {
+    padding: 28px 32px;
+  }
+  
+  .ql-container {
+    min-height: 360px;
+  }
+}
+
+/* Tablet (landscape) */
+@media (max-width: 1200px) {
+  .post-edit {
+    padding: 22px 24px;
+  }
+  
+  .post-edit-header h2 {
+    font-size: 1.0625rem;
+  }
+  
+  .form-section h3 {
+    font-size: 0.875rem;
+  }
+  
+  .ql-container {
+    min-height: 300px;
+  }
+}
+
+/* Tablet (portrait) */
+@media (max-width: 1024px) {
+  .post-edit {
+    padding: 20px;
+  }
+  
+  .post-edit-header h2 {
+    font-size: 1.0625rem;
+  }
+  
+  .form-section h3 {
+    font-size: 0.875rem;
+  }
+  
+  .ql-container {
+    min-height: 280px;
+  }
+  
+  .form-row {
+    gap: 14px;
+  }
+  
+  .checkbox-group {
+    max-height: 180px;
+  }
+}
+
+/* Small tablet / Large mobile */
+@media (max-width: 768px) {
   .post-edit {
     padding: 16px;
   }
-
-  .form-row {
-    grid-template-columns: 1fr;
-  }
-
+  
   .post-edit-header {
     flex-direction: column;
     align-items: flex-start;
+    gap: 10px;
+  }
+  
+  .save-status {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 0.75rem;
+  }
+  
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .checkbox-group {
+    max-height: 160px;
+  }
+  
+  /* Touch-friendly tag input */
+  .tag-input-group {
+    flex-direction: column;
+  }
+  
+  .tag-input-group > button {
+    width: 100%;
+    min-height: 44px;
+  }
+  
+  .tag-input-wrapper input {
+    min-height: 44px;
+  }
+  
+  /* Touch-friendly editor actions */
+  .editor-actions {
+    flex-direction: column;
+  }
+  
+  .btn-upload,
+  .btn-embed {
+    width: 100%;
+    justify-content: center;
+    min-height: 40px;
+  }
+  
+  .revisions-list {
+    max-height: 220px;
+  }
+  
+  .revision-item {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .btn-restore {
+    width: 100%;
+    min-height: 36px;
+  }
+  
+  /* Touch-friendly form inputs */
+  .form-group input[type="text"],
+  .form-group input[type="url"],
+  .form-group input[type="password"],
+  .form-group input[type="datetime-local"],
+  .form-group textarea,
+  .form-group select {
+    min-height: 44px;
+    padding: 10px 12px;
+  }
+  
+  .upload-label {
+    min-height: 44px;
+    padding: 10px 18px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  .post-edit {
+    padding: 14px;
+  }
+  
+  .post-edit-header {
+    padding-bottom: 16px;
+  }
+  
+  .form-section {
+    margin-bottom: 24px;
+    padding-bottom: 24px;
+  }
+  
+  .form-group label {
+    font-size: 0.8125rem;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 0.875rem;
+    padding: 9px 11px;
   }
 
+  /* Touch-friendly form actions */
   .form-actions {
     flex-direction: column-reverse;
+    gap: 8px;
   }
 
   .form-actions button {
     width: 100%;
     text-align: center;
+    justify-content: center;
+    min-height: 44px;
+  }
+  
+  .ql-container {
+    min-height: 240px;
+    font-size: 0.875rem !important;
+  }
+  
+  .featured-image-preview img {
+    max-height: 200px;
+  }
+  
+  .checkbox-group label {
+    min-height: 36px;
+    padding: 4px 0;
+  }
+}
+
+@media (max-width: 480px) {
+  .post-edit {
+    padding: 12px;
+  }
+  
+  .post-edit-header h2 {
+    font-size: 1rem;
+  }
+  
+  .save-status {
+    font-size: 0.6875rem;
+  }
+  
+  .btn-revisions {
+    font-size: 0.75rem;
+    padding: 5px 10px;
+  }
+  
+  .form-section h3 {
+    font-size: 0.8125rem;
+  }
+  
+  .checkbox-group {
+    max-height: 140px;
+    font-size: 0.8125rem;
+  }
+  
+  .tags-list {
+    gap: 4px;
+  }
+  
+  .tag {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+  }
+  
+  .ql-container {
+    min-height: 220px;
+  }
+  
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+  .post-edit {
+    padding: 10px;
+  }
+  
+  .post-edit-header h2 {
+    font-size: 0.9375rem;
+  }
+  
+  .form-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+  
+  .form-section h3 {
+    font-size: 0.75rem;
+  }
+  
+  .ql-container {
+    min-height: 200px;
+    font-size: 0.8125rem !important;
+  }
+  
+  .featured-image-preview img {
+    max-height: 160px;
   }
 }

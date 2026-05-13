@@ -199,3 +199,23 @@
   color: #6b7280;
 }
 
+
+/* Desktop enhancements (keep mobile/tablet unchanged) */
+@media (min-width: 1200px) {
+  .search-page {
+    padding: 3rem 1rem;
+  }
+
+  .search-container {
+    max-width: 1100px;
+  }
+
+  .results-section {
+    margin-bottom: 4rem;
+  }
+
+  .results-header h2 {
+    font-size: 1.75rem;
+  }
+}
+

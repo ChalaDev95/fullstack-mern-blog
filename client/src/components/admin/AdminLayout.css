@@ -368,16 +368,55 @@
 /* ============================================================
    Responsive
    ============================================================ */
-@media (max-width: 1024px) {
+
+/* Large Desktop */
+@media (min-width: 1441px) {
   .admin-content {
-    padding: 20px;
+    /* Use full width on desktop */
+    max-width: none;
+    margin-left: 0;
+    margin-right: 0;
   }
 }
 
+/* Tablet (portrait) */
+@media (max-width: 1024px) {
+  :root {
+    --sidebar-width: 220px;
+  }
+  
+  .admin-content {
+    padding: 18px;
+  }
+  
+  .admin-header h1 {
+    font-size: 1rem;
+  }
+  
+  .nav-item {
+    padding: 10px;
+    font-size: 0.875rem;
+  }
+  
+  .nav-icon {
+    font-size: 1.125rem;
+    min-width: 22px;
+  }
+  
+  .sidebar-header {
+    padding: 0 14px;
+  }
+  
+  .sidebar-nav {
+    padding: 10px 6px;
+  }
+}
+
+/* Small tablet / Large mobile */
 @media (max-width: 768px) {
   .admin-sidebar {
     transform: translateX(-100%);
-    width: var(--sidebar-width) !important;
+    width: 280px !important;
     box-shadow: var(--shadow-lg);
   }
 
@@ -395,6 +434,12 @@
 
   .mobile-menu-btn {
     display: flex;
+    padding: 8px;
+  }
+  
+  .mobile-menu-btn svg {
+    width: 22px;
+    height: 22px;
   }
 
   .sidebar-overlay.visible {
@@ -407,15 +452,105 @@
 
   .admin-header {
     padding: 0 16px;
+    height: 56px;
+  }
+  
+  :root {
+    --header-height: 56px;
   }
 
   .user-name {
     display: none;
   }
+  
+  .role-badge {
+    font-size: 0.6875rem;
+    padding: 2px 8px;
+  }
+  
+  .user-info {
+    gap: 8px;
+  }
+  
+  /* Touch-friendly nav items */
+  .nav-item {
+    padding: 12px 14px;
+    font-size: 0.9375rem;
+  }
+  
+  .nav-icon {
+    font-size: 1.25rem;
+    min-width: 24px;
+  }
+  
+  .sidebar-toggle {
+    padding: 8px;
+  }
+  
+  .sidebar-toggle svg {
+    width: 20px;
+    height: 20px;
+  }
 }
 
+/* Mobile */
 @media (max-width: 480px) {
+  .admin-sidebar {
+    width: 260px !important;
+  }
+  
   .admin-content {
     padding: 12px;
+  }
+  
+  .admin-header {
+    padding: 0 12px;
+  }
+  
+  .admin-header h1 {
+    font-size: 0.9375rem;
+  }
+  
+  .user-avatar {
+    width: 32px;
+    height: 32px;
+    font-size: 0.75rem;
+  }
+  
+  .role-badge {
+    display: none;
+  }
+  
+  .mobile-menu-btn {
+    padding: 6px;
+  }
+  
+  .mobile-menu-btn svg {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* Extra small mobile */
+@media (max-width: 360px) {
+  .admin-sidebar {
+    width: 240px !important;
+  }
+  
+  .admin-content {
+    padding: 10px;
+  }
+  
+  .admin-header {
+    padding: 0 10px;
+    height: 52px;
+  }
+  
+  :root {
+    --header-height: 52px;
+  }
+  
+  .admin-header h1 {
+    font-size: 0.875rem;
   }
 }
