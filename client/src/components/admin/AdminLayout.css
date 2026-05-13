@@ -1,153 +1,421 @@
+/* ============================================================
+   Design Tokens
+   ============================================================ */
+:root {
+  --sidebar-width: 260px;
+  --sidebar-collapsed: 68px;
+  --header-height: 64px;
+
+  --color-brand: #6366f1;
+  --color-brand-dark: #4f46e5;
+  --color-brand-light: #e0e7ff;
+
+  --color-bg: #f1f5f9;
+  --color-surface: #ffffff;
+  --color-border: #e2e8f0;
+
+  --color-text-primary: #0f172a;
+  --color-text-secondary: #64748b;
+  --color-text-muted: #94a3b8;
+
+  --color-sidebar-bg: #0f172a;
+  --color-sidebar-hover: #1e293b;
+  --color-sidebar-active: #1e293b;
+  --color-sidebar-text: #94a3b8;
+  --color-sidebar-text-active: #f8fafc;
+  --color-sidebar-border: #1e293b;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+  --shadow-md: 0 4px 12px rgba(0,0,0,0.08), 0 2px 4px rgba(0,0,0,0.04);
+  --shadow-lg: 0 10px 30px rgba(0,0,0,0.10), 0 4px 8px rgba(0,0,0,0.04);
+
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+/* ============================================================
+   Layout Shell
+   ============================================================ */
 .admin-layout {
   display: flex;
   min-height: 100vh;
-  background: #f5f5f5;
+  background: var(--color-bg);
+  font-family: var(--font-sans);
 }
 
+/* ============================================================
+   Sidebar
+   ============================================================ */
 .admin-sidebar {
-  width: 250px;
-  background: #1a1a1a;
-  color: white;
+  width: var(--sidebar-width);
+  background: var(--color-sidebar-bg);
   display: flex;
   flex-direction: column;
-  transition: width 0.3s;
   position: fixed;
+  top: 0;
+  left: 0;
   height: 100vh;
   overflow-y: auto;
+  overflow-x: hidden;
+  transition: width var(--transition), transform var(--transition);
+  z-index: 100;
+  scrollbar-width: none;
+}
+
+.admin-sidebar::-webkit-scrollbar {
+  display: none;
 }
 
 .admin-sidebar.closed {
-  width: 70px;
+  width: var(--sidebar-collapsed);
 }
 
+/* Brand / Header */
 .sidebar-header {
-  padding: 1.5rem;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid #333;
+  justify-content: space-between;
+  padding: 0 16px;
+  height: var(--header-height);
+  border-bottom: 1px solid var(--color-sidebar-border);
+  flex-shrink: 0;
 }
 
-.sidebar-header h2 {
-  font-size: 1.2rem;
-  white-space: nowrap;
+.sidebar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   overflow: hidden;
 }
 
-.sidebar-header button {
-  background: none;
-  color: white;
-  font-size: 1.5rem;
-  padding: 0.5rem;
-  cursor: pointer;
+.sidebar-brand-icon {
+  width: 32px;
+  height: 32px;
+  background: var(--color-brand);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
 }
 
+.sidebar-header h2 {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #f8fafc;
+  white-space: nowrap;
+  overflow: hidden;
+  letter-spacing: -0.01em;
+}
+
+.sidebar-toggle {
+  background: none;
+  border: none;
+  color: var(--color-sidebar-text);
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background var(--transition), color var(--transition);
+  flex-shrink: 0;
+}
+
+.sidebar-toggle:hover {
+  background: var(--color-sidebar-hover);
+  color: #f8fafc;
+}
+
+.sidebar-toggle svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Nav */
 .sidebar-nav {
   flex: 1;
-  padding: 1rem 0;
+  padding: 12px 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.nav-section-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-sidebar-text);
+  padding: 12px 10px 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  opacity: 1;
+  transition: opacity var(--transition);
+}
+
+.admin-sidebar.closed .nav-section-label {
+  opacity: 0;
 }
 
 .nav-item {
   display: flex;
   align-items: center;
-  padding: 1rem 1.5rem;
-  color: #ccc;
-  transition: all 0.2s;
-  border-left: 3px solid transparent;
+  gap: 10px;
+  padding: 9px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--color-sidebar-text);
+  text-decoration: none;
+  transition: background var(--transition), color var(--transition);
+  white-space: nowrap;
+  overflow: hidden;
+  position: relative;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  font-size: 0.875rem;
+  font-weight: 500;
+  font-family: var(--font-sans);
 }
 
 .nav-item:hover {
-  background: #2a2a2a;
-  color: white;
+  background: var(--color-sidebar-hover);
+  color: var(--color-sidebar-text-active);
+  text-decoration: none;
 }
 
 .nav-item.active {
-  background: #2a2a2a;
-  color: white;
-  border-left-color: #4F46E5;
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+.nav-item.active .nav-icon {
+  opacity: 1;
 }
 
 .nav-icon {
-  font-size: 1.2rem;
-  margin-right: 1rem;
-  min-width: 24px;
+  font-size: 1rem;
+  min-width: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  opacity: 0.8;
 }
 
 .nav-label {
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: opacity var(--transition);
 }
 
-.sidebar.closed .nav-label {
-  display: none;
+.admin-sidebar.closed .nav-label {
+  opacity: 0;
+  width: 0;
+  pointer-events: none;
 }
 
+/* Tooltip for collapsed state */
+.admin-sidebar.closed .nav-item {
+  justify-content: center;
+}
+
+/* Footer */
 .sidebar-footer {
-  padding: 1rem 0;
-  border-top: 1px solid #333;
+  padding: 8px;
+  border-top: 1px solid var(--color-sidebar-border);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
 }
 
 .logout-btn {
-  width: 100%;
-  text-align: left;
   background: none;
-  color: #ccc;
+  border: none;
+  font-family: var(--font-sans);
 }
 
+.logout-btn:hover {
+  background: #3f1515 !important;
+  color: #fca5a5 !important;
+}
+
+/* ============================================================
+   Main Content Area
+   ============================================================ */
 .admin-main {
   flex: 1;
-  margin-left: 250px;
-  transition: margin-left 0.3s;
+  margin-left: var(--sidebar-width);
+  transition: margin-left var(--transition);
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
 }
 
 .admin-sidebar.closed ~ .admin-main {
-  margin-left: 70px;
+  margin-left: var(--sidebar-collapsed);
 }
 
+/* ============================================================
+   Top Header
+   ============================================================ */
 .admin-header {
-  background: white;
-  padding: 1.5rem 2rem;
+  background: var(--color-surface);
+  height: var(--header-height);
+  padding: 0 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  box-shadow: var(--shadow-sm);
+}
+
+.admin-header-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.mobile-menu-btn {
+  display: none;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  transition: background var(--transition);
+}
+
+.mobile-menu-btn:hover {
+  background: var(--color-bg);
 }
 
 .admin-header h1 {
-  font-size: 1.5rem;
-  color: #1a1a1a;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
 }
 
 .user-info {
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 10px;
+}
+
+.user-avatar {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: var(--color-brand-light);
+  color: var(--color-brand-dark);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.user-name {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-primary);
 }
 
 .role-badge {
-  background: #4F46E5;
-  color: white;
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  background: var(--color-brand-light);
+  color: var(--color-brand-dark);
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: capitalize;
+  letter-spacing: 0.01em;
 }
 
+/* ============================================================
+   Content Area
+   ============================================================ */
 .admin-content {
-  padding: 2rem;
+  padding: 24px;
+  flex: 1;
+}
+
+/* ============================================================
+   Mobile Overlay
+   ============================================================ */
+.sidebar-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  z-index: 99;
+  backdrop-filter: blur(2px);
+}
+
+/* ============================================================
+   Responsive
+   ============================================================ */
+@media (max-width: 1024px) {
+  .admin-content {
+    padding: 20px;
+  }
 }
 
 @media (max-width: 768px) {
   .admin-sidebar {
-    width: 70px;
+    transform: translateX(-100%);
+    width: var(--sidebar-width) !important;
+    box-shadow: var(--shadow-lg);
   }
-  
+
+  .admin-sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .admin-sidebar.closed {
+    transform: translateX(-100%);
+  }
+
   .admin-main {
-    margin-left: 70px;
+    margin-left: 0 !important;
   }
-  
-  .nav-label {
+
+  .mobile-menu-btn {
+    display: flex;
+  }
+
+  .sidebar-overlay.visible {
+    display: block;
+  }
+
+  .admin-content {
+    padding: 16px;
+  }
+
+  .admin-header {
+    padding: 0 16px;
+  }
+
+  .user-name {
     display: none;
   }
 }
 
-
+@media (max-width: 480px) {
+  .admin-content {
+    padding: 12px;
+  }
+}

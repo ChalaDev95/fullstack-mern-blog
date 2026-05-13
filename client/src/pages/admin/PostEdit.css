@@ -1,151 +1,242 @@
+/* ============================================================
+   Post Editor
+   ============================================================ */
 .post-edit {
-  background: white;
-  border-radius: 10px;
-  padding: 2rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-sm);
 }
 
+/* ---- Header ---- */
 .post-edit-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--color-border);
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .post-edit-header h2 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
   margin: 0;
 }
 
 .save-status {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  font-size: 0.875rem;
-  color: #6b7280;
+  gap: 10px;
+  font-size: 0.8125rem;
+  flex-wrap: wrap;
 }
 
 .auto-saving {
-  color: #4F46E5;
-  font-weight: 500;
+  color: var(--color-brand);
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .last-saved {
-  color: #10b981;
+  color: #15803d;
+  font-weight: 500;
 }
 
 .btn-revisions {
-  padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  border-radius: 5px;
-  font-size: 0.875rem;
+  padding: 6px 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
 }
 
+.btn-revisions:hover {
+  background: var(--color-brand-light);
+  border-color: var(--color-brand);
+  color: var(--color-brand-dark);
+}
+
+/* ---- Revisions Panel ---- */
 .revisions-panel {
-  background: #f9fafb;
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-  padding: 1.5rem;
-  margin-bottom: 2rem;
+  background: #f8fafc;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px;
+  margin-bottom: 24px;
 }
 
 .revisions-panel h3 {
-  margin-bottom: 1rem;
-  font-size: 1.125rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
 }
 
 .revisions-list {
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 8px;
+  max-height: 280px;
+  overflow-y: auto;
 }
 
 .revision-item {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem;
-  background: white;
-  border-radius: 5px;
-  border: 1px solid #e5e7eb;
+  padding: 10px 14px;
+  background: var(--color-surface);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
 .revision-info {
   display: flex;
-  gap: 1rem;
-  font-size: 0.875rem;
-  color: #6b7280;
+  gap: 12px;
+  font-size: 0.8125rem;
+  color: var(--color-text-secondary);
+  flex-wrap: wrap;
 }
 
 .btn-restore {
-  padding: 0.5rem 1rem;
-  background: #4F46E5;
+  padding: 5px 12px;
+  background: var(--color-brand);
   color: white;
-  border-radius: 5px;
-  font-size: 0.875rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  font-family: var(--font-sans);
+  white-space: nowrap;
 }
 
+.btn-restore:hover {
+  background: var(--color-brand-dark);
+}
+
+/* ---- Form Sections ---- */
 .form-section {
-  margin-bottom: 2rem;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid #e5e7eb;
+  margin-bottom: 28px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--color-border);
 }
 
 .form-section:last-of-type {
   border-bottom: none;
+  margin-bottom: 0;
+  padding-bottom: 0;
 }
 
+.form-section h3 {
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin-bottom: 18px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border);
+}
+
+/* ---- Form Groups ---- */
 .form-group {
-  margin-bottom: 1.5rem;
+  margin-bottom: 18px;
 }
 
 .form-group label {
   display: block;
-  margin-bottom: 0.5rem;
-  font-weight: 500;
-  color: #374151;
+  margin-bottom: 6px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
 }
 
 .form-group input[type="text"],
 .form-group input[type="url"],
+.form-group input[type="password"],
 .form-group input[type="datetime-local"],
 .form-group textarea,
 .form-group select {
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 9px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  color: var(--color-text-primary);
+  background: var(--color-surface);
+  transition: border-color var(--transition), box-shadow var(--transition);
+  font-family: var(--font-sans);
+  outline: none;
 }
 
 .form-group input:focus,
 .form-group textarea:focus,
 .form-group select:focus {
-  outline: none;
-  border-color: #4F46E5;
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
+
+.form-group textarea {
+  resize: vertical;
+  min-height: 80px;
 }
 
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 1rem;
+  gap: 16px;
 }
 
+/* ---- Checkbox Group ---- */
 .checkbox-group {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
+  gap: 8px;
+  max-height: 200px;
+  overflow-y: auto;
+  padding: 10px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: #f8fafc;
 }
 
 .checkbox-group label {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
-  font-weight: normal;
+  gap: 8px;
+  font-weight: 400;
+  font-size: 0.875rem;
+  cursor: pointer;
+  margin-bottom: 0;
 }
 
+.checkbox-group input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--color-brand);
+  cursor: pointer;
+}
+
+/* ---- Tag Input ---- */
 .tag-input-group {
   display: flex;
-  gap: 0.5rem;
-  margin-bottom: 1rem;
+  gap: 8px;
+  margin-bottom: 10px;
 }
 
 .tag-input-wrapper {
@@ -159,172 +250,304 @@
 
 .tag-suggestions {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 4px);
   left: 0;
   right: 0;
-  background: white;
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
-  margin-top: 0.25rem;
-  z-index: 10;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  background: var(--color-surface);
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  z-index: 20;
+  box-shadow: var(--shadow-md);
+  overflow: hidden;
 }
 
 .tag-suggestion {
   display: block;
   width: 100%;
-  padding: 0.5rem 1rem;
+  padding: 8px 12px;
   text-align: left;
   background: none;
   border: none;
   cursor: pointer;
   font-size: 0.875rem;
+  color: var(--color-text-primary);
+  transition: background var(--transition);
+  font-family: var(--font-sans);
 }
 
 .tag-suggestion:hover {
-  background: #f3f4f6;
+  background: var(--color-bg);
 }
 
-.tag-input-group button {
-  padding: 0.75rem 1.5rem;
-  background: #4F46E5;
+.tag-input-group > button {
+  padding: 9px 16px;
+  background: var(--color-brand);
   color: white;
-  border-radius: 5px;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background var(--transition);
+  font-family: var(--font-sans);
+  white-space: nowrap;
+}
+
+.tag-input-group > button:hover {
+  background: var(--color-brand-dark);
 }
 
 .tags-list {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: 6px;
 }
 
 .tag {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  background: #f3f4f6;
-  padding: 0.5rem 1rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  gap: 5px;
+  background: var(--color-brand-light);
+  color: var(--color-brand-dark);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 0.8125rem;
+  font-weight: 500;
 }
 
 .tag button {
   background: none;
   border: none;
-  font-size: 1.2rem;
+  font-size: 1rem;
   cursor: pointer;
-  color: #6b7280;
+  color: var(--color-brand-dark);
+  opacity: 0.6;
+  line-height: 1;
+  padding: 0;
+  transition: opacity var(--transition);
 }
 
-.form-actions {
-  display: flex;
-  justify-content: flex-end;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 2rem;
-  border-top: 1px solid #e5e7eb;
+.tag button:hover {
+  opacity: 1;
 }
 
-.form-actions button {
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  font-weight: 500;
-}
-
-.form-actions .btn-primary {
-  background: #4F46E5;
-  color: white;
-}
-
-.form-actions .btn-primary:hover:not(:disabled) {
-  background: #3730A3;
-}
-
-/* React Quill styles */
-.ql-container {
-  min-height: 300px;
-}
-
-.editor-actions {
-  display: flex;
-  gap: 0.5rem;
-  margin-top: 0.5rem;
-}
-
-.btn-upload,
-.btn-embed {
-  padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  border-radius: 5px;
-  font-size: 0.875rem;
-}
-
-.btn-upload:hover,
-.btn-embed:hover {
-  background: #e5e7eb;
-}
-
+/* ---- Featured Image ---- */
 .featured-image-preview {
   position: relative;
-  margin-bottom: 1rem;
+  display: inline-block;
+  margin-bottom: 10px;
 }
 
 .featured-image-preview img {
-  width: 100%;
-  max-width: 500px;
-  height: auto;
-  border-radius: 5px;
-  border: 1px solid #e5e7eb;
+  max-width: 100%;
+  max-height: 280px;
+  width: auto;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--color-border);
+  display: block;
 }
 
 .btn-remove-image {
   position: absolute;
-  top: 0.5rem;
-  right: 0.5rem;
-  padding: 0.5rem;
-  background: rgba(0, 0, 0, 0.7);
+  top: 8px;
+  right: 8px;
+  padding: 5px 10px;
+  background: rgba(15, 23, 42, 0.75);
   color: white;
-  border-radius: 5px;
-  font-size: 0.875rem;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+  transition: background var(--transition);
+  font-family: var(--font-sans);
+}
+
+.btn-remove-image:hover {
+  background: rgba(185, 28, 28, 0.85);
 }
 
 .image-upload-area {
-  border: 2px dashed #e5e7eb;
-  border-radius: 5px;
-  padding: 2rem;
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 28px 20px;
   text-align: center;
+  background: #f8fafc;
+  transition: border-color var(--transition), background var(--transition);
+}
+
+.image-upload-area:hover {
+  border-color: var(--color-brand);
+  background: var(--color-brand-light);
 }
 
 .upload-label {
-  display: inline-block;
-  padding: 0.75rem 1.5rem;
-  background: #4F46E5;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 18px;
+  background: var(--color-brand);
   color: white;
-  border-radius: 5px;
+  border-radius: var(--radius-md);
   cursor: pointer;
-  font-weight: 500;
+  font-size: 0.875rem;
+  font-weight: 600;
+  transition: background var(--transition), box-shadow var(--transition);
 }
 
 .upload-label:hover {
-  background: #3730A3;
+  background: var(--color-brand-dark);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
 }
 
 .alt-text-input {
-  margin-top: 0.5rem;
+  margin-top: 8px;
   width: 100%;
-  padding: 0.5rem;
-  border: 1px solid #e5e7eb;
-  border-radius: 5px;
+  padding: 8px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-sm);
   font-size: 0.875rem;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color var(--transition);
+}
+
+.alt-text-input:focus {
+  border-color: var(--color-brand);
 }
 
 .password-input {
-  margin-top: 0.5rem;
+  margin-top: 8px;
   width: 100%;
-  padding: 0.75rem;
-  border: 2px solid #e5e7eb;
-  border-radius: 5px;
-  font-size: 1rem;
+  padding: 9px 12px;
+  border: 1.5px solid var(--color-border);
+  border-radius: var(--radius-md);
+  font-size: 0.9375rem;
+  font-family: var(--font-sans);
+  outline: none;
+  transition: border-color var(--transition), box-shadow var(--transition);
 }
 
+.password-input:focus {
+  border-color: var(--color-brand);
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.12);
+}
 
+/* ---- Quill Editor ---- */
+.ql-container {
+  min-height: 320px;
+  font-family: var(--font-sans) !important;
+  font-size: 0.9375rem !important;
+  border-bottom-left-radius: var(--radius-md) !important;
+  border-bottom-right-radius: var(--radius-md) !important;
+}
+
+.ql-toolbar {
+  border-top-left-radius: var(--radius-md) !important;
+  border-top-right-radius: var(--radius-md) !important;
+  background: #f8fafc !important;
+}
+
+.ql-toolbar,
+.ql-container {
+  border-color: var(--color-border) !important;
+}
+
+.editor-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.btn-upload,
+.btn-embed {
+  padding: 6px 12px;
+  background: var(--color-bg);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+}
+
+.btn-upload:hover,
+.btn-embed:hover {
+  background: var(--color-brand-light);
+  border-color: var(--color-brand);
+  color: var(--color-brand-dark);
+}
+
+/* ---- Form Actions ---- */
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--color-border);
+  flex-wrap: wrap;
+}
+
+.form-actions button {
+  padding: 9px 20px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+  border: 1.5px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-text-secondary);
+}
+
+.form-actions button:hover {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
+}
+
+.form-actions .btn-primary {
+  background: var(--color-brand);
+  color: white;
+  border-color: var(--color-brand);
+}
+
+.form-actions .btn-primary:hover:not(:disabled) {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+.form-actions .btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+/* ---- Responsive ---- */
+@media (max-width: 640px) {
+  .post-edit {
+    padding: 16px;
+  }
+
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .post-edit-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .form-actions {
+    flex-direction: column-reverse;
+  }
+
+  .form-actions button {
+    width: 100%;
+    text-align: center;
+  }
+}

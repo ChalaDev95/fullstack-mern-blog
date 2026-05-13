@@ -4,9 +4,8 @@
 FROM node:18-alpine AS client-builder
 WORKDIR /app/client
 COPY client/package*.json ./
-RUN npm ci
 COPY client/ ./
-RUN npm run build
+RUN npm ci && npm run build
 
 # Stage 2: Backend
 FROM node:18-alpine
@@ -14,7 +13,7 @@ WORKDIR /app
 
 # Copy server files
 COPY server/package*.json ./
-RUN npm ci --only=production
+RUN npm ci --omit=dev
 
 COPY server/ ./
 COPY --from=client-builder /app/client/build ./public

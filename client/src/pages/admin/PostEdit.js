@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
-import api from '../../utils/api';
+import api, { resolveAssetUrl } from '../../utils/api';
 import toast from 'react-hot-toast';
 import './PostEdit.css';
 
@@ -94,7 +94,7 @@ const PostEdit = () => {
 
   const fetchPost = async () => {
     try {
-      const res = await api.get(`/posts/${id}`);
+      const res = await api.get(`/posts/id/${id}`);
       const post = res.data.data;
       setFormData({
         title: post.title,
@@ -181,6 +181,27 @@ const PostEdit = () => {
     e.preventDefault();
     setSaving(true);
 
+    // Client-side validation to catch issues before hitting the server
+    const titleTrimmed = formData.title.trim();
+    if (titleTrimmed.length < 10) {
+      toast.error('Title must be at least 10 characters long');
+      setSaving(false);
+      return;
+    }
+    if (titleTrimmed.length > 200) {
+      toast.error('Title cannot exceed 200 characters');
+      setSaving(false);
+      return;
+    }
+
+    // ReactQuill sends '<p><br></p>' for an empty editor — treat that as empty
+    const bodyText = formData.body.replace(/<[^>]*>/g, '').trim();
+    if (!formData.body || !bodyText) {
+      toast.error('Post content cannot be empty');
+      setSaving(false);
+      return;
+    }
+
     try {
       if (isNew) {
         await api.post('/posts', formData);
@@ -191,7 +212,13 @@ const PostEdit = () => {
       }
       navigate('/admin/posts');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Failed to save post');
+      // Show the actual validation error messages from the server
+      const serverErrors = error.response?.data?.errors;
+      if (serverErrors && serverErrors.length > 0) {
+        serverErrors.forEach(err => toast.error(err.msg || err.message));
+      } else {
+        toast.error(error.response?.data?.message || 'Failed to save post');
+      }
     } finally {
       setSaving(false);
     }
@@ -397,11 +424,21 @@ const PostEdit = () => {
       <form onSubmit={handleSubmit}>
         <div className="form-section">
           <div className="form-group">
-            <label>Title *</label>
+            <label>
+              Title *
+              <span style={{
+                marginLeft: '8px',
+                fontSize: '12px',
+                color: formData.title.trim().length < 10 ? '#dc3545' : '#6c757d'
+              }}>
+                ({formData.title.trim().length}/200 — min 10)
+              </span>
+            </label>
             <input
               type="text"
               value={formData.title}
               onChange={(e) => setFormData({ ...formData, title: e.target.value })}
+              placeholder="Enter a title (minimum 10 characters)"
               required
             />
           </div>
@@ -429,7 +466,7 @@ const PostEdit = () => {
             <label>Featured Image</label>
             {formData.featuredImage?.url ? (
               <div className="featured-image-preview">
-                <img src={formData.featuredImage.url} alt={formData.featuredImage.alt || ''} />
+                <img src={resolveAssetUrl(formData.featuredImage.url)} alt={formData.featuredImage.alt || ''} />
                 <button
                   type="button"
                   onClick={() => setFormData({ ...formData, featuredImage: null })}

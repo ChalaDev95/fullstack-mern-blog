@@ -1,114 +1,253 @@
+/* ============================================================
+   Posts Page
+   ============================================================ */
 .posts-page {
-  background: white;
-  border-radius: 10px;
-  padding: 2rem;
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 22px 24px;
+  box-shadow: var(--shadow-sm);
 }
 
+/* ---- Header ---- */
 .page-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 2rem;
+  margin-bottom: 20px;
+  gap: 12px;
+  flex-wrap: wrap;
 }
 
+.page-header h2 {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
+}
+
+/* ---- Primary Button ---- */
 .btn-primary {
-  background: #4F46E5;
-  color: white;
-  padding: 0.75rem 1.5rem;
-  border-radius: 5px;
-  font-weight: 500;
-  transition: background 0.2s;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--color-brand);
+  color: #ffffff;
+  padding: 9px 18px;
+  border-radius: var(--radius-md);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  border: none;
+  cursor: pointer;
+  transition: background var(--transition), box-shadow var(--transition), transform var(--transition);
+  font-family: var(--font-sans);
+  white-space: nowrap;
 }
 
 .btn-primary:hover {
-  background: #3730A3;
+  background: var(--color-brand-dark);
+  box-shadow: 0 4px 12px rgba(99, 102, 241, 0.35);
+  transform: translateY(-1px);
+  color: #ffffff;
+  text-decoration: none;
 }
 
+.btn-primary:active {
+  transform: translateY(0);
+}
+
+/* ---- Filter Tabs ---- */
 .filters {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  gap: 4px;
+  margin-bottom: 20px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--color-border);
+  flex-wrap: wrap;
 }
 
 .filters button {
-  padding: 0.5rem 1rem;
-  background: #f3f4f6;
-  border-radius: 5px;
-  transition: all 0.2s;
+  padding: 6px 14px;
+  background: transparent;
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+}
+
+.filters button:hover {
+  background: var(--color-bg);
+  color: var(--color-text-primary);
 }
 
 .filters button.active {
-  background: #4F46E5;
-  color: white;
+  background: var(--color-brand-light);
+  color: var(--color-brand-dark);
+  border-color: var(--color-brand);
+  font-weight: 600;
 }
 
+/* ---- Table ---- */
 .posts-table {
   overflow-x: auto;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
 }
 
 .posts-table table {
   width: 100%;
   border-collapse: collapse;
+  font-size: 0.875rem;
+}
+
+.posts-table thead {
+  background: #f8fafc;
 }
 
 .posts-table th {
   text-align: left;
-  padding: 1rem;
-  background: #f9fafb;
-  font-weight: 600;
-  color: #374151;
-  border-bottom: 2px solid #e5e7eb;
+  padding: 11px 14px;
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: var(--color-text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  border-bottom: 1px solid var(--color-border);
+  white-space: nowrap;
 }
 
 .posts-table td {
-  padding: 1rem;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 13px 14px;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-primary);
+  vertical-align: middle;
 }
 
-.posts-table tr:hover {
-  background: #f9fafb;
+.posts-table tbody tr:last-child td {
+  border-bottom: none;
 }
 
+.posts-table tbody tr {
+  transition: background var(--transition);
+}
+
+.posts-table tbody tr:hover {
+  background: #f8fafc;
+}
+
+.posts-table td a {
+  color: var(--color-text-primary);
+  font-weight: 500;
+  text-decoration: none;
+  transition: color var(--transition);
+}
+
+.posts-table td a:hover {
+  color: var(--color-brand);
+  text-decoration: none;
+}
+
+/* ---- Status Badges ---- */
 .status-badge {
-  padding: 0.25rem 0.75rem;
-  border-radius: 20px;
-  font-size: 0.875rem;
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 0.75rem;
+  font-weight: 600;
   text-transform: capitalize;
+  white-space: nowrap;
 }
 
 .status-badge.published {
-  background: #d1fae5;
-  color: #065f46;
+  background: #dcfce7;
+  color: #15803d;
 }
 
 .status-badge.draft {
-  background: #fef3c7;
-  color: #92400e;
+  background: #fef9c3;
+  color: #a16207;
 }
 
 .status-badge.scheduled {
   background: #dbeafe;
-  color: #1e40af;
+  color: #1d4ed8;
 }
 
+.status-badge.archived {
+  background: #f1f5f9;
+  color: #64748b;
+}
+
+/* ---- Row Actions ---- */
 .actions {
   display: flex;
-  gap: 1rem;
+  gap: 4px;
+  align-items: center;
 }
 
 .actions a,
 .actions button {
-  color: #4F46E5;
-  background: none;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: 1px solid transparent;
   cursor: pointer;
-  text-decoration: underline;
+  transition: all var(--transition);
+  font-family: var(--font-sans);
+  background: transparent;
+}
+
+.actions a {
+  color: var(--color-brand-dark);
+  border-color: var(--color-brand);
+}
+
+.actions a:hover {
+  background: var(--color-brand-light);
+  text-decoration: none;
+}
+
+.actions button {
+  color: #b91c1c;
+  border-color: #fca5a5;
 }
 
 .actions button:hover {
-  color: #3730A3;
+  background: #fee2e2;
 }
 
+/* ---- Empty State ---- */
+.posts-empty {
+  text-align: center;
+  padding: 48px 20px;
+  color: var(--color-text-muted);
+}
 
+/* ---- Responsive ---- */
+@media (max-width: 768px) {
+  .posts-page {
+    padding: 16px;
+  }
+
+  .posts-table th:nth-child(3),
+  .posts-table td:nth-child(3) {
+    display: none;
+  }
+}
+
+@media (max-width: 560px) {
+  .posts-table th:nth-child(2),
+  .posts-table td:nth-child(2) {
+    display: none;
+  }
+}

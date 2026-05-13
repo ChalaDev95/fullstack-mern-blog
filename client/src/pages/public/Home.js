@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import api from '../../utils/api';
+import api, { resolveAssetUrl } from '../../utils/api';
 import { handleApiError } from '../../utils/errorHandler';
 import Navbar from '../../components/public/Navbar';
 import Footer from '../../components/public/Footer';
@@ -68,7 +68,7 @@ const Home = () => {
                 <div className="card h-100 shadow-sm">
                   {post.featuredImage?.url && (
                     <img
-                      src={post.featuredImage.url}
+                      src={resolveAssetUrl(post.featuredImage.url)}
                       className="card-img-top"
                       alt={post.featuredImage.alt || post.title}
                       style={{ height: '200px', objectFit: 'cover' }}

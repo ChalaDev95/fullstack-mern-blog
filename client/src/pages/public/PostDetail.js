@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
-import api from '../../utils/api';
+import api, { resolveAssetUrl, resolveAssetUrlsInHtml } from '../../utils/api';
 import { handleApiError } from '../../utils/errorHandler';
 import SEO from '../../components/SEO';
 import LikeButton from '../../components/public/LikeButton';
@@ -84,7 +84,7 @@ const PostDetail = () => {
     '@type': 'BlogPosting',
     headline: post.title,
     description: post.excerpt || post.seo?.metaDescription,
-    image: post.featuredImage?.url || post.seo?.ogImage,
+    image: resolveAssetUrl(post.featuredImage?.url || post.seo?.ogImage),
     datePublished: post.publishDate,
     dateModified: post.lastModified,
     author: {
@@ -98,7 +98,7 @@ const PostDetail = () => {
   };
 
   // Convert markdown to HTML
-  const htmlContent = post.body ? marked(post.body) : '';
+  const htmlContent = post.body ? resolveAssetUrlsInHtml(marked(post.body)) : '';
 
   return (
     <>
@@ -106,7 +106,7 @@ const PostDetail = () => {
         title={post.seo?.metaTitle || post.title}
         description={post.seo?.metaDescription || post.excerpt}
         canonical={post.seo?.canonicalUrl || `${window.location.origin}/posts/${post.slug}`}
-        ogImage={post.seo?.ogImage || post.featuredImage?.url}
+        ogImage={resolveAssetUrl(post.seo?.ogImage || post.featuredImage?.url)}
         ogType={post.seo?.ogType || 'article'}
         structuredData={structuredData}
       />
@@ -114,7 +114,7 @@ const PostDetail = () => {
         <header className="post-header">
           {post.featuredImage && (
             <img
-              src={post.featuredImage.url}
+              src={resolveAssetUrl(post.featuredImage.url)}
               alt={post.featuredImage.alt || post.title}
               className="featured-image"
             />

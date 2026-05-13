@@ -82,6 +82,24 @@ See [SETUP.md](./SETUP.md) for detailed installation and setup instructions.
 3. Start servers: `npm run dev`
 4. Access admin panel at: http://localhost:3000/admin/login
 
+## Database Maintenance
+
+When deploying the tightened database rules, audit existing records first:
+
+```bash
+cd server
+npm run db:audit
+```
+
+If the audit shows duplicate or invalid Like/Subscription records, repair them with:
+
+```bash
+cd server
+npm run db:repair
+```
+
+The repair script keeps the oldest valid record in each duplicate group and removes invalid records that violate the current schema rules.
+
 ## Project Structure
 
 ```

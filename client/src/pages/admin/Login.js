@@ -14,58 +14,67 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-
     try {
       await login(email, password);
-      toast.success('Login successful!');
+      toast.success('Welcome back!');
       navigate('/admin/dashboard');
     } catch (error) {
-      toast.error(error.response?.data?.message || 'Login failed');
+      toast.error(error.response?.data?.message || 'Login failed. Check your credentials.');
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="login-page d-flex align-items-center justify-content-center min-vh-100 bg-light">
-      <div className="login-container card shadow-lg" style={{ maxWidth: '400px', width: '100%' }}>
-        <div className="card-body p-4">
-          <h1 className="card-title text-center mb-4">CMS Admin Login</h1>
-          <form onSubmit={handleSubmit}>
-            <div className="mb-3">
-              <label className="form-label">Email</label>
+    <div className="login-page">
+      <div className="login-container">
+        <div className="login-header">
+          <div className="login-logo">✦</div>
+          <h1>CMS Admin</h1>
+          <p>Sign in to your dashboard</p>
+        </div>
+
+        <div className="login-body">
+          <form onSubmit={handleSubmit} noValidate>
+            <div className="login-form-group">
+              <label htmlFor="email">Email address</label>
               <input
+                id="email"
                 type="email"
-                className="form-control"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                placeholder="admin@example.com"
                 required
-                placeholder="Enter your email"
+                autoComplete="email"
+                autoFocus
               />
             </div>
-            <div className="mb-4">
-              <label className="form-label">Password</label>
+
+            <div className="login-form-group">
+              <label htmlFor="password">Password</label>
               <input
+                id="password"
                 type="password"
-                className="form-control"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
-                required
                 placeholder="Enter your password"
+                required
+                autoComplete="current-password"
               />
             </div>
-            <button 
-              type="submit" 
-              disabled={loading} 
-              className="btn btn-primary w-100"
-            >
+
+            <button type="submit" className="login-btn" disabled={loading}>
               {loading ? (
                 <>
-                  <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                  Logging in...
+                  <span
+                    className="spinner-border spinner-border-sm"
+                    role="status"
+                    aria-hidden="true"
+                  />
+                  Signing in…
                 </>
               ) : (
-                'Login'
+                'Sign in'
               )}
             </button>
           </form>
@@ -76,5 +85,3 @@ const Login = () => {
 };
 
 export default Login;
-
-

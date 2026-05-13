@@ -1,13 +1,43 @@
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import api from '../../utils/api';
 import './Dashboard.css';
+
+const SkeletonCard = () => (
+  <div className="skeleton-card">
+    <div className="skeleton-line short" />
+    <div className="skeleton-line tall" />
+    <div className="skeleton-line thin" />
+    <div className="skeleton-line thin" style={{ width: '50%' }} />
+  </div>
+);
+
+const StatCard = ({ label, value, icon, details }) => (
+  <div className="stat-card">
+    <div className="stat-card-header">
+      <span className="stat-card-label">{label}</span>
+      <div className="stat-card-icon">{icon}</div>
+    </div>
+    <div className="stat-number">{value}</div>
+    {details && (
+      <div className="stat-details">
+        {details.map((d, i) => (
+          <span key={i} className="stat-detail-item">
+            <span className={`stat-detail-dot ${d.color}`} />
+            {d.label}: <strong>{d.value}</strong>
+          </span>
+        ))}
+      </div>
+    )}
+  </div>
+);
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
     posts: { total: 0, published: 0, drafts: 0 },
     comments: { total: 0, pending: 0 },
     users: 0,
-    media: 0
+    media: 0,
   });
   const [loading, setLoading] = useState(true);
 
@@ -17,38 +47,29 @@ const Dashboard = () => {
 
   const fetchStats = async () => {
     try {
-      // Fetch posts
-      const postsRes = await api.get('/posts?limit=1');
-      const postsTotal = postsRes.data.total;
-      
-      // Fetch published posts
-      const publishedRes = await api.get('/posts?status=published&limit=1');
-      const publishedTotal = publishedRes.data.total;
-      
-      // Fetch drafts
-      const draftsRes = await api.get('/posts?status=draft&limit=1');
-      const draftsTotal = draftsRes.data.total;
-
-      // Fetch comments
-      // Note: You'd need to add a stats endpoint or count manually
-      
-      // Fetch users
-      const usersRes = await api.get('/users');
-      const usersTotal = usersRes.data.count;
-
-      // Fetch media
-      const mediaRes = await api.get('/media?limit=1');
-      const mediaTotal = mediaRes.data.total;
+      const [postsRes, publishedRes, draftsRes, commentsRes, pendingRes, usersRes, mediaRes] =
+        await Promise.all([
+          api.get('/posts?limit=1'),
+          api.get('/posts?status=published&limit=1'),
+          api.get('/posts?status=draft&limit=1'),
+          api.get('/comments?limit=1'),
+          api.get('/comments?status=pending&limit=1'),
+          api.get('/users'),
+          api.get('/media?limit=1'),
+        ]);
 
       setStats({
         posts: {
-          total: postsTotal,
-          published: publishedTotal,
-          drafts: draftsTotal
+          total:     postsRes.data.total     || 0,
+          published: publishedRes.data.total || 0,
+          drafts:    draftsRes.data.total    || 0,
         },
-        comments: { total: 0, pending: 0 },
-        users: usersTotal,
-        media: mediaTotal
+        comments: {
+          total:   commentsRes.data.total || 0,
+          pending: pendingRes.data.total  || 0,
+        },
+        users: usersRes.data.count || 0,
+        media: mediaRes.data.total || 0,
       });
     } catch (error) {
       console.error('Error fetching stats:', error);
@@ -58,14 +79,13 @@ const Dashboard = () => {
   };
 
   if (loading) {
-    return <div>Loading dashboard...</div>;
-  }
-
-  if (loading) {
     return (
-      <div className="text-center py-5">
-        <div className="spinner-border text-primary" role="status">
-          <span className="visually-hidden">Loading dashboard...</span>
+      <div className="dashboard-loading">
+        <div className="skeleton-grid">
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
+          <SkeletonCard />
         </div>
       </div>
     );
@@ -73,46 +93,47 @@ const Dashboard = () => {
 
   return (
     <div className="dashboard">
-      <h2 className="mb-4">Dashboard Overview</h2>
-      <div className="row g-4">
-        <div className="col-md-6 col-lg-3">
-          <div className="stat-card card h-100">
-            <div className="card-body">
-              <h5 className="card-title text-muted mb-3">Total Posts</h5>
-              <p className="stat-number">{stats.posts.total}</p>
-              <div className="stat-details mt-3">
-                <small className="text-muted d-block">Published: {stats.posts.published}</small>
-                <small className="text-muted d-block">Drafts: {stats.posts.drafts}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6 col-lg-3">
-          <div className="stat-card card h-100">
-            <div className="card-body">
-              <h5 className="card-title text-muted mb-3">Comments</h5>
-              <p className="stat-number">{stats.comments.total}</p>
-              <div className="stat-details mt-3">
-                <small className="text-muted d-block">Pending: {stats.comments.pending}</small>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6 col-lg-3">
-          <div className="stat-card card h-100">
-            <div className="card-body">
-              <h5 className="card-title text-muted mb-3">Users</h5>
-              <p className="stat-number">{stats.users}</p>
-            </div>
-          </div>
-        </div>
-        <div className="col-md-6 col-lg-3">
-          <div className="stat-card card h-100">
-            <div className="card-body">
-              <h5 className="card-title text-muted mb-3">Media Files</h5>
-              <p className="stat-number">{stats.media}</p>
-            </div>
-          </div>
+      <h2 className="dashboard-title">Overview</h2>
+
+      <div className="stats-grid">
+        <StatCard
+          label="Total Posts"
+          value={stats.posts.total}
+          icon="📝"
+          details={[
+            { label: 'Published', value: stats.posts.published, color: 'green'  },
+            { label: 'Drafts',    value: stats.posts.drafts,    color: 'yellow' },
+          ]}
+        />
+        <StatCard
+          label="Comments"
+          value={stats.comments.total}
+          icon="💬"
+          details={[
+            { label: 'Pending', value: stats.comments.pending, color: 'red' },
+          ]}
+        />
+        <StatCard
+          label="Users"
+          value={stats.users}
+          icon="👥"
+        />
+        <StatCard
+          label="Media Files"
+          value={stats.media}
+          icon="🖼️"
+        />
+      </div>
+
+      <div className="dashboard-actions">
+        <h3>Quick Actions</h3>
+        <div className="quick-actions-grid">
+          <Link to="/admin/posts/new"  className="quick-action-btn">✏️ New Post</Link>
+          <Link to="/admin/media"      className="quick-action-btn">📤 Upload Media</Link>
+          <Link to="/admin/comments"   className="quick-action-btn">💬 Moderate Comments</Link>
+          <Link to="/admin/categories" className="quick-action-btn">📁 Manage Categories</Link>
+          <Link to="/admin/users"      className="quick-action-btn">👥 Manage Users</Link>
+          <Link to="/admin/settings"   className="quick-action-btn">⚙️ Settings</Link>
         </div>
       </div>
     </div>
@@ -120,5 +141,3 @@ const Dashboard = () => {
 };
 
 export default Dashboard;
-
-
